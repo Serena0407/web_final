@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>輔仁大學貴重儀器預約系統</title>
+    <link rel="icon" href="http://home.lib.fju.edu.tw/TC/sites/default/files/shield-FJCULIB-FJCU.png" type="image/png">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <style>
+        .hero-placeholder {
+            height: 95px; /* 可調整佔位符的高度 */
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .navbar {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar & Hero Start -->
+    <div class="container-fluid position-relative p-0">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0" style="height: 95px;">
+            <a href="index.html" class="navbar-brand p-0">
+                <h1 class="text-primary m-0"><b>輔仁大學貴重儀器預約系統</b></h1>
+                <!-- <img src="img/logo.png" alt="Logo"> -->
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
+    </div>
+    <!-- Navbar & Hero End -->
+
+        <div class="hero-placeholder">
+        </div>
+        <!-- Hero Placeholder End -->
+    </div>
+    <!-- Navbar & Hero End -->
+
+    <!-- Manager Booking Records Start -->
+    <div class="container my-5">
+        <h2 class="text-center mb-4">管理者查詢預約記錄</h2>
+        <div class="card" style="margin-bottom: 100px;">
+            <div class="card-body">
+                <form id="searchForm">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="searchKeyword" class="form-label">查詢關鍵字</label>
+                            <input type="text" class="form-control" id="searchKeyword" placeholder="輸入關鍵字">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="startDate" class="form-label">開始日期</label>
+                            <input type="date" class="form-control" id="startDate">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="endDate" class="form-label">結束日期</label>
+                            <input type="date" class="form-control" id="endDate">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">查詢</button>
+                </form>
+                <div class="mt-4">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>預約人姓名</th>
+                                <th>預約日期</th>
+                                <th>預約時間</th>
+                                <th>器材名稱</th>
+                                <th>狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingRecords">
+                            <!-- 預約記錄將顯示在這裡 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <!-- Manager Booking Records End -->
+
+    
+    <!-- JavaScript -->
+    <script>
+        $(document).ready(function () {
+            $('#searchForm').submit(function (event) {
+                event.preventDefault();
+    
+                var keyword = $('#searchKeyword').val().trim().toLowerCase();
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+    
+                var bookingRecords = [
+                    { name: 'xxx', date: '2024-05-25', time: '10:00', equipment: 'ImageXpress Micro高內含影像分析系統', status: '已歸還' },
+                    { name: 'xxx', date: '2024-05-26', time: '14:00', equipment: 'Luminex 200多功能螢光生物分子多重分析系統', status: '已歸還' },
+                    { name: 'xxx', date: '2024-05-27', time: '09:30', equipment: '全方位智慧型電流輸出電轉殖儀', status: '已取消' },
+                    { name: 'xxx', date: '2024-05-28', time: '11:00', equipment: '動物學習與記憶測試組', status: '使用中' },
+                    { name: 'xxx', date: '2024-05-29', time: '15:00', equipment: '微流體電泳分析儀', status: '使用中' },
+                    { name: 'xxx', date: '2024-05-31', time: '10:30', equipment: '微電極陣列電生理系統', status: '已預約' },
+                    { name: 'xxx', date: '2024-05-29', time: '13:30', equipment: '呼吸模擬器組', status: '已預約' },
+                    { name: 'xxx', date: '2024-06-05', time: '12:00', equipment: '成人全功能型呼吸器', status: '已歸還' },
+                    { name: 'xxx', date: '2024-06-12', time: '08:30', equipment: '次世代高通量核酸定序系統(超高速半導體基因定序儀)', status: '已預約' },
+                    { name: 'xxx', date: '2024-06-23', time: '16:00', equipment: '穿透式電子顯微鏡', status: '已預約' },
+                    { name: 'xxx', date: '2024-06-25', time: '11:30', equipment: '血管顯微影像觀察紀錄系統', status: '已預約' },
+                    { name: 'xxx', date: '2024-06-29', time: '09:00', equipment: '高速流式細胞分選儀', status: '已預約' },
+                ];
+    
+                var filteredRecords = bookingRecords.filter(function(record) {
+                    var recordDate = new Date(record.date);
+                    var matchesKeyword = !keyword || record.name.toLowerCase().includes(keyword) || record.equipment.toLowerCase().includes(keyword);
+                    var matchesStartDate = !startDate || recordDate >= new Date(startDate);
+                    var matchesEndDate = !endDate || recordDate <= new Date(endDate);
+                    return matchesKeyword && matchesStartDate && matchesEndDate;
+                });
+    
+                updateBookingRecordsTable(filteredRecords);
+            });
+        });
+    
+        function updateBookingRecordsTable(records) {
+            $('#bookingRecords').empty();
+
+            records.forEach(function (record) {
+                var row = '<tr>' +
+                    '<td>' + record.name + '</td>' +
+                    '<td>' + record.date + '</td>' +
+                    '<td>' + record.time + '</td>' +
+                    '<td>' + record.equipment + '</td>' +
+                    '<td>' + record.status + '</td>' +
+                    '</tr>';
+                $('#bookingRecords').append(row);
+            });
+        }
+    </script>    
+
+    <!-- Footer Start -->
+   <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="text-white mb-3">輔仁大學貴重儀器預約系統</h4>
+                        <div class="mb-2" style="overflow: hidden; line-height: 50px;">
+                            <a href="#"><i class="fas fa-angle-right me-2"></i> 執行團隊&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;暴躁燒肉火車</a>
+                        </div>
+                        <div class="mb-2" style="overflow: hidden; line-height: 100px;">
+                            <a href="#"><i class="fas fa-angle-right me-2"></i> 參考資料 </a>&nbsp;&nbsp;&nbsp;
+                            <img src="http://development.fju.edu.tw/uploads/2024/01/achievements/0cCF73qfPziwGLwOg7BTXqXGDpraVjTAIrV3HboB.png" style="width: 120px; height: 50px;">
+                        </div>
+                        <div class="mb-2" style="overflow: hidden;">
+                            <a href="#"><i class="fas fa-angle-right me-2"></i> 實踐SDGs</a>
+                            <img src="http://development.fju.edu.tw/uploads/2024/01/achievements/xE6aUqo0kYvRG2KSsSspKxI3A703vO4KhyjCmS4U.png" style="width: 55px; height: 55px;" />
+                            <img src="http://development.fju.edu.tw/uploads/2024/01/achievements/0QxcY1rIV35p3wZBVOJzoCvytAbGJcpZOqI3M2sW.png" style="width: 55px; height: 55px;" />
+                            <img src="http://development.fju.edu.tw/uploads/2024/01/achievements/s4VIxpsPy9AjMKEDBKd0UMfpKmHTVWN3nms41PyL.png" style="width: 55px; height: 55px;" />
+                        </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="text-white mb-3">儀器預約系統</h4>
+                    <a href="index1.html"><i class="fas fa-angle-right me-2"></i> 藝術學院</a>
+                    <a href="index2.html"><i class="fas fa-angle-right me-2"></i> 教育學院</a>
+                    <a href="index.html"><i class="fas fa-angle-right me-2"></i> 醫學院</a>
+                    <a href="index3.html"><i class="fas fa-angle-right me-2"></i> 理工學院</a>
+                    <a href="index4.html"><i class="fas fa-angle-right me-2"></i> 民生學院</a>
+                    <a href="index5.html"><i class="fas fa-angle-right me-2"></i> 織品服裝學院</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="text-white mb-3">我的預約</h4>
+                    <a href="service.html"><i class="fas fa-angle-right me-2"></i> 查詢預約紀錄</a>
+                    <a href="payment.html"><i class="fas fa-angle-right me-2"></i> 預約繳費系統</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+        
+        <!-- Copyright Start -->
+        <div class="container-fluid copyright py-4">
+            <div class="container">
+                <div class="row g-4 align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-md-0">
+                        <span class="text-white"><a href="#"><i class="fas fa-copyright text-light me-2"></i>輔仁大學貴重儀器預約中心</a>, All right reserved.</span>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end text-white">
+                        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
+                        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
+                        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">暴躁燒肉火車</a> Distributed By <a class="border-bottom" href="https://themewagon.com">暴躁燒肉火車</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright End -->
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>   
+
+        
+        <!-- JavaScript Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/wow/wow.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        
+
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
+        
+    </body>
+
+</html>
